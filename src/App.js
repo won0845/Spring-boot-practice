@@ -1,23 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
-import {useEffect, useState} from "react";
-import axios from "axios";
+import Home from "./routes/Home";
+import Save from "./routes/Save";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
 
 function App() {
-  const [hello, setHello] = useState('');
-
-  useEffect(() => {
-    axios.get('/api/test')
-        .then((res) => {
-          setHello(res.data);
-        })
-  }, []);
   return (
-      <div className="App">
-          Spring Boot로 부터 받은 데이터 : {hello}
-      </div>
+      <Router basename={process.env.PUBLIC_URL}>
+          <Routes>
+              <Route path={`/`}   element={<Home />}/>
+              <Route path={`/board/`}  element={<Save />}/>
+          </Routes>
+      </Router>
   );
 }
-
 
 export default App;
