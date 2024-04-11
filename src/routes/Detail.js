@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
 function Detail() {
     const [board, setBoard] = useState([]);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
@@ -28,6 +29,14 @@ function Detail() {
             // fetchData(); // 혹은 댓글 데이터 따로 처리
         } catch (error) {
             console.error('Error writing comment:', error);
+        }
+    }
+    const handleDelete = async () => {
+        try {
+            await axios.get(`/api/board/delete/${id}`);
+            navigate('/board');
+        } catch (error) {
+            console.error('Error deleting data:', error);
         }
     }
 
@@ -64,7 +73,7 @@ function Detail() {
 
             <Link to={`/board/`}><button>목록</button></Link>
             <Link to={`/board/update/${id}`}><button>수정</button></Link>
-            <Link to={`/board/delete/${id}`}><button>삭제</button></Link>
+            <button onClick={handleDelete}>삭제</button>
         </div>
     );
 }
