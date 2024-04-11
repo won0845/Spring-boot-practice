@@ -1,5 +1,6 @@
 package com.example.demospring.dto;
 
+import com.example.demospring.entity.BoardEntity;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -20,4 +21,17 @@ public class BoardDTO {
     private int boardHits;  // 조회수
     private LocalDateTime boardCreateTime;  //작성시간
     private LocalDateTime boardUpdateTime;  //수정시간
+
+    public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setId(boardEntity.getId());
+        boardDTO.setBoardWriter(boardEntity.getBoardWriter());
+        boardDTO.setBoardPass(boardEntity.getBoardPass());
+        boardDTO.setBoardTitle(boardEntity.getBoardTitle());
+        boardDTO.setBoardContent(boardEntity.getBoardContent());
+        boardDTO.setBoardHits(boardEntity.getBoardHits());
+        boardDTO.setBoardCreateTime(boardEntity.getCreatedTime());
+        boardDTO.setBoardUpdateTime(boardEntity.getUpdatedTime());
+        return boardDTO;
+    }
 }
