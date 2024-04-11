@@ -49,7 +49,7 @@ function Detail() {
                 </tr>
                 <tr>
                     <th>date</th>
-                    <td>{board.boardCreatedTime}</td>
+                    <td>{new Date(board.boardCreateTime).toLocaleString('en-GB', {timeZone: 'UTC'}).replace(/Z|GMT/g, '')}</td>
                 </tr>
                 <tr>
                     <th>hits</th>
@@ -57,7 +57,7 @@ function Detail() {
                 </tr>
                 <tr>
                     <th>contents</th>
-                    <td>{board.boardContents}</td>
+                    <td>{board.boardContent}</td>
                 </tr>
                 </tbody>
             </table>
