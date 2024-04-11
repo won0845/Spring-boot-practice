@@ -48,8 +48,7 @@ public class BoardEntity extends BaseEntity{
         boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContent(boardDTO.getBoardContent());
-        System.out.println(boardDTO.getBoardContent() +"왜안돼 ??");
-        boardEntity.setBoardHits(boardEntity.getBoardHits());
+        boardEntity.setBoardHits(boardDTO.getBoardHits());// Entity에서 DTO로 변경
         return boardEntity;
     }
 }
