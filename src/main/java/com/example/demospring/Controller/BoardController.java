@@ -46,12 +46,17 @@ public class BoardController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute BoardDTO boardDTO, Model model){
+    public String update(@RequestBody BoardDTO boardDTO, Model model){
         System.out.println("api/board/update실행 user 로 부터 받아온 데이터"+boardDTO.toString());
         // updateForm에서 받아온 데이터를 저장
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
         return "Success";
-
+    }
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        boardService.delete(id);
+        // id를 통해서 데이터를 삭제
+        return "Success";
     }
 }
