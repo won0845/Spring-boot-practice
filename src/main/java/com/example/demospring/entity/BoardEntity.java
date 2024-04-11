@@ -41,4 +41,15 @@ public class BoardEntity extends BaseEntity{
         // 이 작업은 DTO에 담긴 값들을 Entity 객체로 옮겨담는 작업이다.
     }
 
+    public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setId(boardDTO.getId());
+        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+        boardEntity.setBoardPass(boardDTO.getBoardPass());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContent(boardDTO.getBoardContent());
+        System.out.println(boardDTO.getBoardContent() +"왜안돼 ??");
+        boardEntity.setBoardHits(boardEntity.getBoardHits());
+        return boardEntity;
+    }
 }

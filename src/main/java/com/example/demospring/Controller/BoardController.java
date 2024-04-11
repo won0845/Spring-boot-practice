@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/api/board")
 public class BoardController {
     private final BoardService boardService;
     @GetMapping("/save")
@@ -18,10 +18,9 @@ public class BoardController {
         return "save";
     }
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) {
-        System.out.println(boardDTO.toString());
+    public String save(@RequestBody BoardDTO boardDTO) {
         boardService.save(boardDTO);
-        return "Home";
+        return "Success";
     }
     @GetMapping("/")
     public List<BoardDTO> findAll() {
@@ -37,5 +36,22 @@ public class BoardController {
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
         return boardService.findById(id);
+    }
+
+    @GetMapping("/update/{id}")
+    public BoardDTO updateForm(@PathVariable Long id, Model model) {
+        // id를 통해서 데이터를 가져와서 model에 담아서 반환
+        // 일단은 id에 대한 정보를 가져와서 update에서 보여줌
+        return boardService.findById(id);
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model){
+        System.out.println("api/board/update실행 user 로 부터 받아온 데이터"+boardDTO.toString());
+        // updateForm에서 받아온 데이터를 저장
+        BoardDTO board = boardService.update(boardDTO);
+        model.addAttribute("board", board);
+        return "Success";
+
     }
 }

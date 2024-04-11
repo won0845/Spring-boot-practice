@@ -13,3 +13,6 @@
 4. 글수정(/board/update/{id}/)
 5. 글삭제(/board/delete/{id})
 6. 페이징 처리(/board/paging)
+
+수정후 조회수 합치는 기능 추가 예정
+```
