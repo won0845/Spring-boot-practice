@@ -8,6 +8,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import Update from "./routes/Update";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
           <Routes>
               <Route path={`/`}   element={<Home />}/>
               <Route path={`/board/save`}  element={<Save />}/>
-              <Route path={`/board/`}  element={<BoardList/>}/>
+              <Route path={`/board`}  element={<BoardList/>}/>
               <Route path={`/board/:id`}  element={<Detail/>}/>
+              <Route path={`/board/update/:id`}  element={<Update/>}/>
           </Routes>
       </Router>
   );

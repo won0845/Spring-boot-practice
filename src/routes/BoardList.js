@@ -8,7 +8,7 @@ function BoardList() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('/board/');
+                const response = await axios.get('/api/board/');
                 setBoardList(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);

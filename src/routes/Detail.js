@@ -10,7 +10,7 @@ function Detail() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`/board/${id}`);
+                const response = await axios.get(`/api/board/${id}`);
                 console.log(response.data)
                 setBoard(response.data);
             } catch (error) {
@@ -63,8 +63,8 @@ function Detail() {
             </table>
 
             <Link to={`/board/`}><button>목록</button></Link>
-            <Link to={`/board/update`}><button>수정</button></Link>
-            <Link to={`/board/delete`}><button>삭제</button></Link>
+            <Link to={`/board/update/${id}`}><button>수정</button></Link>
+            <Link to={`/board/delete/${id}`}><button>삭제</button></Link>
         </div>
     );
 }
