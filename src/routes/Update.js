@@ -10,6 +10,7 @@ function Update() {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
+    const [pass, setPass] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -25,14 +26,31 @@ function Update() {
         fetchData();
     }, []);
 
-    const handleBoardUpdate = (event) => {
+    const handleBoardUpdate = async (event) => {
         event.preventDefault(); // 폼의 기본 동작 중지
 
-        const pass = boardUpdate.boardPass;
-        const inputPass = document.getElementById("boardPass").value;
+        const serverPass = boardUpdate.boardPass;
 
-        if (pass === inputPass) {
-            alert("수정 완료!");
+        if (pass === serverPass) {
+            await axios.post("/api/board/update",{
+                id: id,
+                boardWriter: boardUpdate.boardWriter,
+                boardPass: pass,
+                boardTitle: title,
+                boardContent: contents,
+                boardHits: boardUpdate.boardHits
+            }).then((res) => {
+                console.log(res);
+                console.log(res.data);
+                if(res.data === "Success"){
+                    alert("작성되었습니다!");
+                    navigate('/', {replace: true}); // 홈으로 이동
+                }else{
+                    alert("다시 작성해주십시오!");
+                }
+            }).catch((err)=> {
+                console.log(err);
+            });
             navigate(`/board/${id}`, {replace: true}); // 상세 페이지로 이동
 
         } else {
@@ -42,14 +60,15 @@ function Update() {
 
     return (
         <div>
-            <form action="/api/board/update" onSubmit={handleBoardUpdate} id="updateForm" name="updateForm">
+            <form  onSubmit={handleBoardUpdate} id="updateForm" name="updateForm">
                 <input type="hidden" name="id" value={boardUpdate.id}/>
 
                 <label htmlFor="boardWriter">writer: </label>
                 <input type="text" name="boardWriter" value={boardUpdate.boardWriter} readOnly/> <br/>
 
                 <label htmlFor="boardPass">pass: </label>
-                <input type="text" name="boardPass" id="boardPass"/> <br/>
+                <input type="text" name="boardPass" value={pass} onChange={event=> {
+                    setPass(event.target.value)}}/> <br/>
 
                 <label htmlFor="boardTitle">title: </label>
                 <input type="text" name="boardTitle"  value={title} onChange={event=> {
