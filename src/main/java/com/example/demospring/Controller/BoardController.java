@@ -3,10 +3,16 @@ package com.example.demospring.Controller;
 import com.example.demospring.dto.BoardDTO;
 import com.example.demospring.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,5 +64,30 @@ public class BoardController {
         boardService.delete(id);
         // id를 통해서 데이터를 삭제
         return "Success";
+    }
+    // /board/paging?page=1&size=10
+    @GetMapping("/paging/{currentPage}")
+    public Map<String, Object> paging(@PageableDefault(page = 1) Pageable pageable,@PathVariable Long currentPage){
+        System.out.println("page"+ currentPage +" 요청 받음");
+        pageable.getPageNumber();
+        pageable = PageRequest.of(currentPage.intValue(), pageable.getPageSize()); // currentPage를 적용하여 새로운 pageable 객체 생성
+        System.out.println("page"+ pageable.getPageNumber() +" 현재 페이지입니다");
+        Page<BoardDTO> boardList = boardService.paging(pageable);
+        int blockLimit = 5;     // 한 페이지에 몇개의 페이지를 보여줄지
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;    // 시작 페이지 7, 8, 9 페이지가 화면에 나타난다면 7페이지가 시작페이지가 된다.1,4,7,10 값이 나온다
+        int endPage = Math.min((startPage + blockLimit - 1), boardList.getTotalPages()); // 3,6, 9, 12 페이지가 화면에 나타난다면 9페이지가 끝페이지가 된다.
+        // 총페이지 갯수가 9개라면 8개 까지만 보여주면 된다. -> 총페이지가 큰경우 9를 보여주고 작은경우 8을 보여준다.
+        // page 갯수 20개 라면?
+        // 현재 사용자가 3페이지를 본다고 하면
+        // 1 2 3 4 5 에서 3 페이지는 표시가 되어있고 링크는 되어있지 않다.
+        // 보여지는 페이지 개수 1,2,3,4,5,6까지 보여지게 한다.
+
+        Map<String, Object> paginationInfo = new HashMap<>();
+        paginationInfo.put("boardList", boardList);
+        paginationInfo.put("blockLimit", blockLimit);
+        paginationInfo.put("startPage", startPage);
+        paginationInfo.put("endPage", endPage);
+
+        return paginationInfo;
     }
 }
