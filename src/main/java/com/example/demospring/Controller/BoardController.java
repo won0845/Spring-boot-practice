@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,8 @@ public class BoardController {
         return "save";
     }
     @PostMapping("/save")
-    public String save(@RequestBody BoardDTO boardDTO) {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+        System.out.println("api/board/save실행 user 로 부터 받아온 데이터"+boardDTO.toString());
         boardService.save(boardDTO);
         return "Success";
     }
@@ -34,13 +36,11 @@ public class BoardController {
         return boardService.findAll();
     }
     @GetMapping("/{id}")
-    public BoardDTO findById(@PathVariable Long id, Model model) {
+    public BoardDTO findById(@PathVariable Long id) {
         // id를 통해서 데이터를 가져와서 model에 담아서 반환
         // 해당 게시글의 조회수를 하나 올리고
         // 게시글 데이터를 가져와서 detail.html에 출력
         boardService.updateHits(id);
-        BoardDTO boardDTO = boardService.findById(id);
-        model.addAttribute("board", boardDTO);
         return boardService.findById(id);
     }
 
@@ -67,7 +67,7 @@ public class BoardController {
     }
     // /board/paging?page=1&size=10
     @GetMapping("/paging/{currentPage}")
-    public Map<String, Object> paging(@PageableDefault(page = 1) Pageable pageable,@PathVariable Long currentPage){
+    public Map<String, Object> paging(@PageableDefault Pageable pageable,@PathVariable Long currentPage){
         System.out.println("page"+ currentPage +" 요청 받음");
         pageable.getPageNumber();
         pageable = PageRequest.of(currentPage.intValue(), pageable.getPageSize()); // currentPage를 적용하여 새로운 pageable 객체 생성

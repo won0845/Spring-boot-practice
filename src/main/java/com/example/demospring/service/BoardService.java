@@ -2,6 +2,8 @@ package com.example.demospring.service;
 
 import com.example.demospring.dto.BoardDTO;
 import com.example.demospring.entity.BoardEntity;
+import com.example.demospring.entity.BoardFileEntity;
+import com.example.demospring.repository.BoardFileRepository;
 import com.example.demospring.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +26,42 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    public void save(BoardDTO boardDTO) {
-        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-        boardRepository.save(boardEntity);
+    private final BoardFileRepository boardFileRepository;
+    public void save(BoardDTO boardDTO) throws IOException {
+//        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+//        boardRepository.save(boardEntity); 파일이 없을 때는 이방식을 쓰면된다.
+
+        // 파일 첨부 여부에 따라 로직 분리
+        if(boardDTO.getBoardFile().isEmpty()){
+            //첨부 파일 없는경우
+            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO,0);
+            boardRepository.save(boardEntity);
+        }else {
+            // 첨부파일이 있는 경우
+            /* 1. DTO에 담긴 파일을 꺼냄
+                2. 파일의 이름을 가져옴
+                // 내사진.jpg => 3242351325_내사진.jpg
+                3. 서버 저장용 이름을 만든다.
+                4. 저장 경로를 설정한다.
+                5. 해당 경로에 파일을 저장한다.
+                6. board_table에 해당 데이터 save처리
+                7. board_file_table에 파일 정보를 저장한다.
+            */
+            MultipartFile boardFile =  boardDTO.getBoardFile(); //1.
+            String originalFileName = boardFile.getOriginalFilename(); //2.
+            String storedFileName = System.currentTimeMillis() + "_" + originalFileName; //3. 만약에 같은 시간에 같은이름을 올린다면 중복될 수 있다 매우 희박...
+            String savePath = "C:/springboot_img/" + storedFileName; //4. C:/springboot_img/3242351325_내사진.jpg
+            boardFile.transferTo(new File(savePath)); //5. 파일 저장
+            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO,1); //1이면 파일이 있고 0이면 파일이 없다.
+            Long saveId = boardRepository.save(boardEntity).getId(); //6. board_table에 저장
+            BoardEntity board = boardRepository.findById(saveId).get(); //부모 엔티티를 DB에서 가져옴
+
+             BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFileName, storedFileName);
+             boardFileRepository.save(boardFileEntity); //7. board_file_table에 저장
+
+
+            
+        }
     }
     public List<BoardDTO> findAll() {
         // findAll 을 통해서 repository에 있는 데이터를 가져올때는 Entity로 가져오는데 모두 가져오기 때문에 list로 받아온다.
