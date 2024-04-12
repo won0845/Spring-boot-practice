@@ -71,7 +71,7 @@ function Detail() {
                 </tbody>
             </table>
 
-            <Link to={`/board/`}><button>목록</button></Link>
+            <Link to={`/board/paging`}><button>목록</button></Link>
             <Link to={`/board/update/${id}`}><button>수정</button></Link>
             <button onClick={handleDelete}>삭제</button>
         </div>
