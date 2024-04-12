@@ -68,6 +68,12 @@ function Detail() {
                     <th>contents</th>
                     <td>{board.boardContent}</td>
                 </tr>
+                {
+                    board.fileAttached ? (<tr>
+                        <th>Image</th>
+                        <td><img src = {`/upload/${board.storedFileName}`} alt=""/></td>
+                    </tr>) : null
+                }
                 </tbody>
             </table>
 
