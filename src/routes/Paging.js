@@ -65,7 +65,7 @@ function Paging() {
                     <tr key={board.id}>
                         <td>{board.id}</td>
                         <td>
-                            <a href={`/board/${board.id}|page=${boardList.number + 1}`}>{board.boardTitle}</a>
+                            <Link to={`/board/${board.id}`}><td>{board.boardTitle}</td></Link>
                         </td>
                         <td>{board.boardWriter}</td>
                         <td>{new Date(board.boardCreateTime).toLocaleString('en-GB', {timeZone: 'UTC'}).replace(/Z|GMT/g, '')}</td>
