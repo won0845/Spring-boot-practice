@@ -1,6 +1,7 @@
 import './App.css';
 import Home from "./routes/Home";
 import Save from "./routes/Save";
+import Paging from "./routes/Paging";
 import BoardList from "./routes/BoardList";
 import Detail from "./routes/Detail";
 import {
@@ -19,6 +20,7 @@ function App() {
               <Route path={`/board`}  element={<BoardList/>}/>
               <Route path={`/board/:id`}  element={<Detail/>}/>
               <Route path={`/board/update/:id`}  element={<Update/>}/>
+              <Route path={`/board/paging`}  element={<Paging/>}/>
           </Routes>
       </Router>
   );
