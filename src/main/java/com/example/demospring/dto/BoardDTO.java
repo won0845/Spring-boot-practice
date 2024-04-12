@@ -46,6 +46,18 @@ public class BoardDTO {
         boardDTO.setBoardHits(boardEntity.getBoardHits());
         boardDTO.setBoardCreateTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdateTime(boardEntity.getUpdatedTime());
+        if (boardEntity.getFileAttached() == 0 ){
+            boardDTO.setFileAttached(0);   //0 파일이 없다.
+        } else {
+            boardDTO.setFileAttached(boardEntity.getFileAttached());   //1 파일이 있다.
+            // 파일 이름을 가져가야한다.
+            // orginalFileName, storedFileName : board_file_table(BoardFileEntity)에 저장된 파일 이름
+            // join
+            // select * from board_table b, board_file_table f where b.id = f.board_id and b.id = ?;
+            boardDTO.setOriginalFileName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+            // 엔티티에 있는 파일리스트에서 첫번째 파일의 이름을 가져온다. -> 파일이 하나만 있는 경우
+            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());    // 실제 활용하지않지만 쓸 수 있으니까 가져온다.
+        }
         return boardDTO;
     }
 }

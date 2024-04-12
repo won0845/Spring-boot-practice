@@ -63,6 +63,7 @@ public class BoardService {
             
         }
     }
+    @Transactional  // 안붙은경우 에러가 발생한다.
     public List<BoardDTO> findAll() {
         // findAll 을 통해서 repository에 있는 데이터를 가져올때는 Entity로 가져오는데 모두 가져오기 때문에 list로 받아온다.
         List<BoardEntity> boardEntityList = boardRepository.findAll();
