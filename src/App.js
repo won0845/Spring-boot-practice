@@ -18,7 +18,7 @@ function App() {
               <Route path={`/`}   element={<Home />}/>
               <Route path={`/board/save`}  element={<Save />}/>
               <Route path={`/board`}  element={<BoardList/>}/>
-              <Route path={`/board/:id`}  element={<Detail/>}/>
+              <Route path={`/board/detail/:id`}  element={<Detail/>}/>
               <Route path={`/board/update/:id`}  element={<Update/>}/>
               <Route path={`/board/paging`}  element={<Paging/>}/>
           </Routes>

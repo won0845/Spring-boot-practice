@@ -34,7 +34,7 @@ function BoardList() {
                     {boardList.map(board => (
                         <tr key={board.id}>
                             <td>{board.id}</td>
-                            <Link to={`/board/${board.id}`}><td>{board.boardTitle}</td></Link>
+                            <td><Link to={`/board/detail/${board.id}`}>{board.boardTitle}</Link></td>
                             <td>{board.boardWriter}</td>
                             <td>{new Date(board.boardCreateTime).toLocaleString('en-GB', {timeZone: 'UTC'}).replace(/Z|GMT/g, '')}</td>
                             <td>{board.boardHits}</td>

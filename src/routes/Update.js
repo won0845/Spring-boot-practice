@@ -6,8 +6,11 @@ import {useParams, useNavigate} from 'react-router-dom';
 function Update() {
 
     const {id} = useParams();
-    const [boardUpdate, setBoard] = useState([]);
     const navigate = useNavigate();
+    const [boardUpdate, setBoard] = useState({
+        boardWriter: "",
+        boardPass: "",
+        boardHits: "",});
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
     const [pass, setPass] = useState("");
@@ -15,10 +18,11 @@ function Update() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`/api/board/update/${id}`);
+                const response = await axios.get(`/api/board/update?id=${id}`);
                 console.log(response.data)
                 setBoard(response.data);
                 setTitle(response.data.boardTitle)
+                setContents(response.data.boardContent);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -51,7 +55,7 @@ function Update() {
             }).catch((err)=> {
                 console.log(err);
             });
-            navigate(`/board/${id}`, {replace: true}); // 상세 페이지로 이동
+            navigate(`/board/detail/${id}`, {replace: true}); // 상세 페이지로 이동
 
         } else {
             alert("비밀번호가 일치하지 않습니다!");
