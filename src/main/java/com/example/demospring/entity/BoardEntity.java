@@ -44,6 +44,12 @@ public class BoardEntity extends BaseEntity{
     // private BoardEntity boardEntity;
     // BoardFileEntity 에서 boardEntity의 이름이랑 같게 설정한다.
 
+    // 여기서 밑에 boardEntity는 commentEntity에서 참조하는 변수명이다.
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY) // 1:N 관계
+    private List<CommentEntity> commentEntityList = new ArrayList<>();  // 게시글하나 댓글 여러개 올 수 있도록 참조관계 설정한다. DB에 리스트 타입으로 설정되는 건아니다.
+
+
+
     public static BoardEntity toSaveEntity(BoardDTO boardDTO, int fileAttached){
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setBoardWriter(boardDTO.getBoardWriter());
