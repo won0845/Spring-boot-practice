@@ -40,6 +40,10 @@ public class CommentController {
             return new ResponseEntity<>("실패",HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/printComment")
+    public List<CommentDTO> printComment(@RequestParam("id") Long id) {
+        return commentService.findAll(id);
+    }
 }
 
 

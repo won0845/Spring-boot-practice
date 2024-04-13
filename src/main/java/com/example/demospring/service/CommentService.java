@@ -6,6 +6,7 @@ import com.example.demospring.entity.BoardEntity;
 import com.example.demospring.entity.CommentEntity;
 import com.example.demospring.repository.BoardRepository;
 import com.example.demospring.repository.CommentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class CommentService {
             return null;
         }
     }
-
+    @Transactional
     public List<CommentDTO> findAll(Long boardId) {
         // select * from comment_table where board_id = ? order by id desc;
         // 게시글 id를 기준으로 목록 전체를 가져오고 댓글 id 기준으로 내림차순 정렬한다. -> 최신이 먼저오게
