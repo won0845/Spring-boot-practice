@@ -7,11 +7,13 @@ function Detail() {
     const [board, setBoard] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [commentWriter, setCommentWriter] = useState("");
+    const [commentContents, setCommentContents] = useState("");
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`/api/board/${id}`);
+                const response = await axios.get(`/api/board/detail?id=${id}`);
                 console.log(response.data)
                 setBoard(response.data);
             } catch (error) {
@@ -22,18 +24,26 @@ function Detail() {
     }, []);
 
     async function commentWrite() {
-        try {
             // 댓글 작성 처리
             // axios.post('/comment/write', { writer: commentWriter, contents: commentContents });
             // 댓글 작성 후 commentList 업데이트
             // fetchData(); // 혹은 댓글 데이터 따로 처리
-        } catch (error) {
-            console.error('Error writing comment:', error);
-        }
+            console.log(commentWriter, commentContents);
+            await axios.post("/api/comment/saveComment", {
+                boardId:id,
+                commentWriter: commentWriter,
+                commentContents: commentContents
+            }).then((res) => {
+                console.log(res);
+                //navigate('/', {replace: true}); // 홈으로 이동
+            }).catch((err)=> {
+                console.log(err);
+            });
+
     }
     const handleDelete = async () => {
         try {
-            await axios.get(`/api/board/delete/${id}`);
+            await axios.get(`/api/board/delete?id=${id}`);
             navigate('/board');
         } catch (error) {
             console.error('Error deleting data:', error);
@@ -80,6 +90,19 @@ function Detail() {
             <Link to={`/board/paging`}><button>목록</button></Link>
             <Link to={`/board/update/${id}`}><button>수정</button></Link>
             <button onClick={handleDelete}>삭제</button>
+
+            {/*댓글 작성부분*/}
+            <div id="commentWrite">
+                <input type="text" id="commentWriter" placeholder="작성자" value={commentWriter} onChange={event => {
+                    setCommentWriter(event.target.value)}}/>
+                <input type="text" id="commentContents" placeholder="내용" value={commentContents} onChange={event => {
+                    setCommentContents(event.target.value)}}/>
+                <button onClick={commentWrite}>댓글 작성</button>
+            </div>
+            {/*댓글 출력부분*/}
+            <div id="commentList">
+
+            </div>
         </div>
     );
 }
