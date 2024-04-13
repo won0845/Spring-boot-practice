@@ -9,11 +9,15 @@ function Detail() {
     const navigate = useNavigate();
     const [commentWriter, setCommentWriter] = useState("");
     const [commentContents, setCommentContents] = useState("");
+    const [commentList, setCommentList] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const response = await axios.get(`/api/board/detail?id=${id}`);
+                const response2 = await axios.get(`/api/comment/printComment?id=${id}`);
+                console.log(response2.data)
+                setCommentList(response2.data)
                 console.log(response.data)
                 setBoard(response.data);
             } catch (error) {
@@ -35,6 +39,9 @@ function Detail() {
                 commentContents: commentContents
             }).then((res) => {
                 console.log(res);
+                setCommentList(res.data);
+                setCommentWriter("");
+                setCommentContents("");
                 //navigate('/', {replace: true}); // 홈으로 이동
             }).catch((err)=> {
                 console.log(err);
@@ -87,6 +94,8 @@ function Detail() {
                 </tbody>
             </table>
 
+
+
             <Link to={`/board/paging`}><button>목록</button></Link>
             <Link to={`/board/update/${id}`}><button>수정</button></Link>
             <button onClick={handleDelete}>삭제</button>
@@ -98,10 +107,31 @@ function Detail() {
                 <input type="text" id="commentContents" placeholder="내용" value={commentContents} onChange={event => {
                     setCommentContents(event.target.value)}}/>
                 <button onClick={commentWrite}>댓글 작성</button>
+
             </div>
             {/*댓글 출력부분*/}
             <div id="commentList">
-
+                <table>
+                    <thead>
+                    <tr>
+                        <th>댓글 번호</th>
+                        <th>작성자</th>
+                        <th>내용</th>
+                        <th>작성시간</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {commentList.map(comment => (
+                        <tr key={comment.id}>
+                            <td>{comment.id}</td>
+                            <td>{comment.commentWriter}</td>
+                            <td>{comment.commentContents}</td>
+                            <td>{comment.boardId}</td>
+                            <td>{new Date(comment.commentCreatedTime).toLocaleString('en-GB', {timeZone: 'UTC'}).replace(/Z|GMT/g, '')}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
