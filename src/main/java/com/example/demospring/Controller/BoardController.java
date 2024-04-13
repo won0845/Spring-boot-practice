@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
+@CrossOrigin(origins = "http://localhost:3000") // 특정 출처 허용
 public class BoardController {
     private final BoardService boardService;
     @GetMapping("/save")
@@ -35,8 +36,9 @@ public class BoardController {
         // DB에서 데이터를 가져와서 리스트로 반환
         return boardService.findAll();
     }
-    @GetMapping("/{id}")
-    public BoardDTO findById(@PathVariable Long id) {
+    @GetMapping("/detail")
+    public BoardDTO findById(@RequestParam("id") Long id) {
+        System.out.println("api/board/detail실행 user 로 부터 받아온 데이터"+id.toString());
         // id를 통해서 데이터를 가져와서 model에 담아서 반환
         // 해당 게시글의 조회수를 하나 올리고
         // 게시글 데이터를 가져와서 detail.html에 출력
@@ -44,8 +46,8 @@ public class BoardController {
         return boardService.findById(id);
     }
 
-    @GetMapping("/update/{id}")
-    public BoardDTO updateForm(@PathVariable Long id, Model model) {
+    @GetMapping("/update")
+    public BoardDTO updateForm(@RequestParam("id") Long id) {
         // id를 통해서 데이터를 가져와서 model에 담아서 반환
         // 일단은 id에 대한 정보를 가져와서 update에서 보여줌
         return boardService.findById(id);
@@ -59,15 +61,15 @@ public class BoardController {
         model.addAttribute("board", board);
         return "Success";
     }
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") Long id) {
         boardService.delete(id);
         // id를 통해서 데이터를 삭제
         return "Success";
     }
     // /board/paging?page=1&size=10
-    @GetMapping("/paging/{currentPage}")
-    public Map<String, Object> paging(@PageableDefault Pageable pageable,@PathVariable Long currentPage){
+    @GetMapping("/paging")
+    public Map<String, Object> paging(@PageableDefault Pageable pageable,@RequestParam("currentPage") Long currentPage){
         System.out.println("page"+ currentPage +" 요청 받음");
         pageable.getPageNumber();
         pageable = PageRequest.of(currentPage.intValue(), pageable.getPageSize()); // currentPage를 적용하여 새로운 pageable 객체 생성
@@ -90,4 +92,5 @@ public class BoardController {
 
         return paginationInfo;
     }
+
 }
