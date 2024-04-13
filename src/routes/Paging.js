@@ -30,7 +30,7 @@ function Paging() {
         async function fetchData() {
             try {
                 console.log(currentPage + "page는 현재 페이지입니다." );
-                const response = await axios.get(`/api/board/paging/${currentPage}`);
+                const response = await axios.get(`http://localhost:8080/api/board/paging?currentPage=${currentPage}`);
                 console.log(response.data)
                 setDate(response.data);
                 setBoardList(response.data.boardList.content);
@@ -64,9 +64,7 @@ function Paging() {
                 {boardList.map((board) => (
                     <tr key={board.id}>
                         <td>{board.id}</td>
-                        <td>
-                            <Link to={`/board/${board.id}`}><td>{board.boardTitle}</td></Link>
-                        </td>
+                        <td><Link to={`/board/detail/${board.id}`}>{board.boardTitle}</Link></td>
                         <td>{board.boardWriter}</td>
                         <td>{new Date(board.boardCreateTime).toLocaleString('en-GB', {timeZone: 'UTC'}).replace(/Z|GMT/g, '')}</td>
                         <td>{board.boardHits}</td>
