@@ -69,7 +69,8 @@ function Save() {
                 ></textarea>
                 <br />
                 File:{" "}
-                <input type="file" name="boardFile" />
+                <input type="file" name="boardFile" />  
+                {/*// mulitple 추가시 파일 여러개 업로드 가능*/}
                 <br />
                 <button type="submit">Save</button>
             </form>
