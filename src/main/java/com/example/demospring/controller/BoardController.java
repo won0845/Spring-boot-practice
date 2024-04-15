@@ -1,4 +1,4 @@
-package com.example.demospring.Controller;
+package com.example.demospring.controller;
 
 import com.example.demospring.dto.BoardDTO;
 import com.example.demospring.service.BoardService;
