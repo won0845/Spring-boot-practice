@@ -1,9 +1,11 @@
 package com.example.demospring.dto;
 
+import com.example.demospring.entity.MemberEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.aspectj.weaver.Member;
 
 @Getter
 @Setter
@@ -17,4 +19,13 @@ public class UserDTO {
     private String username;
     private String userPW;
     private String userEmail;
+
+    public static UserDTO toUserDTO(MemberEntity memberEntity){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(memberEntity.getId());
+        userDTO.setUsername(memberEntity.getUsername());
+        userDTO.setUserPW(memberEntity.getUserPW());
+        userDTO.setUserEmail(memberEntity.getUserEmail());
+        return userDTO;
+    }
 }

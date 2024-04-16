@@ -28,12 +28,14 @@ public class BoardDTO {
     private  String storedFileName;     // 서버 저장용 파일 이름
     private int fileAttached;             // 첨부 파일 여부(첨부 1, 미첨부 0)
 
-    public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreateTime) {
+    public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreateTime,String storedFileName,String boardContent ) {
+        this.boardContent = boardContent;
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
         this.boardHits = boardHits;
         this.boardCreateTime = boardCreateTime;
+        this.storedFileName = storedFileName;
     }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {

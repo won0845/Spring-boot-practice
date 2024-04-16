@@ -2,6 +2,7 @@ package com.example.demospring.controller;
 
 import com.example.demospring.dto.UserDTO;
 import com.example.demospring.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +20,21 @@ public class UserController {
         return "Success";
     }
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO userDTO){
+    public String login(@RequestBody UserDTO userDTO, HttpSession session){
         System.out.println(userDTO);
         UserDTO loginResult = memberService.login(userDTO);
         if (loginResult != null){
             //login 성공
-            return "main";
+            session.setAttribute("loginEmail", loginResult.getUserEmail());
+            return "Success";
         }else{
-
+            return "loginPage";
         }
-        return "loginPage";
+    }
+    @PostMapping("/check")
+    public @ResponseBody String login(@RequestBody UserDTO userDTO){
+        String userEmail = userDTO.getUserEmail();
+        return memberService.emailCheck(userEmail);
     }
 
 
