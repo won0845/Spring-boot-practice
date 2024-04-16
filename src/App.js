@@ -10,6 +10,8 @@ import {
     Route,
 } from "react-router-dom";
 import Update from "./routes/Update";
+import Login from "./routes/Login";
+import SignUp from "./routes/SignUp";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
               <Route path={`/board/detail/:id`}  element={<Detail/>}/>
               <Route path={`/board/update/:id`}  element={<Update/>}/>
               <Route path={`/board/paging`}  element={<Paging/>}/>
+              <Route path={`/user/login/`} element={<Login/>}/>
+              <Route path={`/user/signup/`} element={<SignUp/>}/>
           </Routes>
       </Router>
   );
