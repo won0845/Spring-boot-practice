@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Link, useNavigate} from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import styles from '../components/Container.module.css';
 
 function Detail() {
     const [board, setBoard] = useState([]);
@@ -59,40 +60,24 @@ function Detail() {
 
     return (
         <div>
-            <table>
-                <tbody>
-                <tr>
-                    <th>id</th>
-                    <td>{board.id}</td>
-                </tr>
-                <tr>
-                    <th>title</th>
-                    <td>{board.boardTitle}</td>
-                </tr>
-                <tr>
-                    <th>writer</th>
-                    <td>{board.boardWriter}</td>
-                </tr>
-                <tr>
-                    <th>date</th>
-                    <td>{new Date(board.boardCreateTime).toLocaleString('en-GB', {timeZone: 'UTC'}).replace(/Z|GMT/g, '')}</td>
-                </tr>
-                <tr>
-                    <th>hits</th>
-                    <td>{board.boardHits}</td>
-                </tr>
-                <tr>
-                    <th>contents</th>
-                    <td>{board.boardContent}</td>
-                </tr>
-                {
-                    board.fileAttached ? (<tr>
-                        <th>Image</th>
-                        <td><img src = {`/upload/${board.storedFileName}`} alt=""/></td>
-                    </tr>) : null
-                }
-                </tbody>
-            </table>
+            <div className={styles.detailContainer}>
+                <div className={styles.detailBox}>
+                    <div className={styles.detailTitle}>
+                        <span className={styles.detailSpanticleTitle}>{board.boardTitle}</span><br/>
+                        <span className={styles.spanticleContent}>조회수 {board.boardHits}</span><br/>
+                    </div>
+                    <div className={styles.detailName}>
+                        <span className={styles.spanticleTitle}>{board.boardWriter}</span><br/>
+                        <span className={styles.spanticleContent}>{new Date(board.boardCreateTime).toLocaleString('en-GB', {timeZone: 'UTC'}).
+                        replace(/Z|GMT/g, '')}</span><br/>
+                    </div>
+                </div>
+                {board.fileAttached ? (<img className={styles.detailImg} src = {`/upload/${board.storedFileName}`} alt=""/>)
+                    : null}
+                <div className={styles.detailContentBox}>
+                <span className={styles.spanticleContent}>{board.boardContent}</span><br/>
+                </div>
+            </div>
 
 
 

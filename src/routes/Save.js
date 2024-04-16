@@ -1,11 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import styles from '../components/Container.module.css';
+import iStyles from '../components/Input.module.css';
 
 function Save() {
     const [writer, setWriter] = useState("");
     const [pass, setPass] = useState("");
     const [title, setTitle] = useState("");
     const [contents, setContent] = useState("");
+    const [file, setFile] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // 기본 폼 제출 방지
@@ -46,34 +51,17 @@ function Save() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                Writer:{" "}
-                <input type="text" name="boardWriter" value={writer} onChange=
-                    {(event) => setWriter(event.target.value)}
-                />
-                <br />
-                pw:{" "}
-                <input type="password" name="boardPass" value={pass} onChange=
-                    {(event) => setPass(event.target.value)}
-                />
-                <br />
-                Title:{" "}
-                <input
-                    type="text" name="boardTitle" value={title} onChange=
-                    {(event) => setTitle(event.target.value)}
-                />
-                <br />
-                Content:{" "}
-                <textarea name="boardContent" cols="30" rows="10" value={contents} onChange=
+            <div className={styles.container}>
+            <span className={styles.title}>게시글 작성</span><br/>
+            <Input type="text" name="boardWriter" hold = "작성자" onChange={(value) => setWriter(value)} /><br/>
+            <Input type="password" name="boardPass" hold = "비밀번호" onChange={(value) => setPass(value)} /><br/>
+            <Input type="text" name="boardTitle" hold = "제목" onChange={(value) => setTitle(value)} /><br/>
+            <textarea className={iStyles.area} name="boardContent" cols="40" rows="10" value={contents} onChange=
                     {(event) => setContent(event.target.value)}
-                ></textarea>
-                <br />
-                File:{" "}
-                <input type="file" name="boardFile" />  
-                {/*// mulitple 추가시 파일 여러개 업로드 가능*/}
-                <br />
-                <button type="submit">Save</button>
-            </form>
+            ></textarea><br />
+            <Input type="file" name="boardFile" onChange={(value) => setFile(value)}/>
+            <Button name="Save" name2="저장" onClick={handleSubmit} ></Button>
+            </div>
         </div>
     );
 }

@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
 import {useParams, useNavigate} from 'react-router-dom';
+import styles from "../components/Container.module.css";
+import Input from "../components/Input";
+import iStyles from "../components/Input.module.css";
+import Button from "../components/Button";
 
 function Update() {
 
@@ -14,6 +18,7 @@ function Update() {
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
     const [pass, setPass] = useState("");
+    const [file, setFile] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -63,29 +68,29 @@ function Update() {
     }
 
     return (
+
         <div>
-            <form  onSubmit={handleBoardUpdate} id="updateForm" name="updateForm">
-                <input type="hidden" name="id" value={boardUpdate.id}/>
-
-                <label htmlFor="boardWriter">writer: </label>
-                <input type="text" name="boardWriter" value={boardUpdate.boardWriter} readOnly/> <br/>
-
-                <label htmlFor="boardPass">pass: </label>
-                <input type="text" name="boardPass" value={pass} onChange={event=> {
-                    setPass(event.target.value)}}/> <br/>
-
-                <label htmlFor="boardTitle">title: </label>
-                <input type="text" name="boardTitle"  value={title} onChange={event=> {
-                    setTitle(event.target.value)
+            <div className={styles.container}>
+                <span className={styles.title}>게시글 수정</span><br/>
+                <input type="text" name="boardWriter" value={boardUpdate.boardWriter} readOnly style={{
+                    background: 'white', // CSS 속성은 camelCase 사용
+                    borderRadius: '10px', // borderRadius도 camelCase
+                    marginTop: '10px',
+                    color: 'rgba(0, 0, 0, 0.8)',
+                    height: '35px',
+                    width: '300px',
+                    paddingLeft: '10px'
                 }}/> <br/>
-
-                <label htmlFor="boardContents">contents: </label>
-                <textarea name="boardContents" value={contents} onChange={event => {
-                    setContents(event.target.value)}} cols="30" rows="10"></textarea> <br/>
-
+                <Input type="password" name="boardPass" hold = "비밀번호" onChange={(value) => setPass(value)} /><br/>
+                <Input type="text" name="boardTitle" hold = {title} onChange={(value) => setTitle(value)} /><br/>
+                <textarea className={iStyles.area} name="boardContent" cols="40" rows="10" value={contents} onChange=
+                    {(event) => setContents(event.target.value)}
+                ></textarea><br />
                 <input type="hidden" name="boardHits" value={boardUpdate.boardHits}/>
-                <input type="submit" value="글수정"/>
-            </form>
+                <Input type="file" name="boardFile" onChange={(value) => setFile(value)}/>
+                <Button name="Update" name2="수정" onClick={handleBoardUpdate} ></Button>
+            </div>
+
         </div>
     );
 }
