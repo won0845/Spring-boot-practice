@@ -122,7 +122,7 @@ public class BoardService {
         System.out.println("boardEntities.isLast() = " + boardEntities.isLast());   // 마지막 페이지인지
 
         // 목록 : id, writer, title, hits, createdTime
-        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime())); //board 엔티티를 하나씩 꺼내서 옮겨줌
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime() , board.getBoardFileEntityList().get(0).getStoredFileName(), board.getBoardContent())); //board 엔티티를 하나씩 꺼내서 옮겨줌
         // map을 이용해 엔티티를 BoardDTO로 변환해준다.
         return boardDTOS;
     }
