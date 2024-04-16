@@ -37,7 +37,7 @@ public class BoardEntity extends BaseEntity{
     private int fileAttached; // 첨부 파일 여부(첨부 1, 미첨부 0)
     
     // 부모 테이블인 경우
-    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY) // 1:N 관계
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER) // 1:N 관계
     private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();  // 게시글하나 파일 여러개 올 수 있도록 참조관계 설정한다. DB에 리스트 타입으로 설정되는 건아니다.
     // mappedBy ->
     // @JoinColumn(name = "board_id")
